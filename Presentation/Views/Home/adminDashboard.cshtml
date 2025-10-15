@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="#">Home</a>
+    <a href="#">Users</a>
+    <a href="#">Transactions</a>
+    <a href="#" id="logoutBtn">Log out</a>
+</div>
+
+<div class="container">
+    <!-- Greeting -->
+    <div class="title">
+        Admin Dashboard - <span id="adminName">Donald Trump</span>
+    </div>
+
+    <!-- User Management -->
+    <div class="section">
+        <div class="section-header">
+            <h3>User Management</h3>
+            <button class="btn-main" id="createUserBtn">Create New User</button>
+        </div>
+        <input type="text" id="searchUsers" placeholder="Search users...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Account Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 20px; color: #999;">
+                        Loading users...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Transaction Overview -->
+    <div class="section">
+        <h3>Recent Transactions</h3>
+        <input type="text" id="searchTransactions" placeholder="Search transactions...">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTableBody">
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 20px; color: #999;">
+                        Loading transactions...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- System Actions -->
+    <div class="section">
+        <h3>System Actions</h3>
+        <div class="button-group">
+            <button class="btn-main">View Reports</button>
+            <button class="btn-sub">Export Data</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/adminDashboard.js"></script>
+}
