@@ -400,28 +400,52 @@ namespace DCAssignment2A.Controllers
 
 
         // Attempt to login
+        //[HttpGet]
+        //[Route("Login")]
+        //public async Task<IActionResult> Login([FromBody] LoginData loginData)
+        //{
+        //    if (string.IsNullOrWhiteSpace(loginData.Username) || string.IsNullOrWhiteSpace(loginData.Password)) return BadRequest("Username and password are required.");
+
+        //    var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.name == loginData.Username && u.password == loginData.Password);
+
+        //    if (user == null)
+        //    {
+        //        return Unauthorized("Invalid username or password.");
+        //    }
+
+        //    // Return user info (not password or address)
+        //    return Ok(new
+        //    {
+        //        user.UserProfileId,
+        //        user.name,
+        //        user.profilePicture,
+        //        user.phoneNumber,
+        //        user.email,
+        //    });
+        //}
+
+        //brians attempt
+        //feel free to change it to above but gimme reason why so i can understand lol
         [HttpGet]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginData loginData)
+        public async Task<ActionResult<UserProfile>> Login([FromBody] LoginData loginData)
         {
+            Console.WriteLine("Login attempt received.");
             if (string.IsNullOrWhiteSpace(loginData.Username) || string.IsNullOrWhiteSpace(loginData.Password)) return BadRequest("Username and password are required.");
-
+            Console.WriteLine("login data is: " + loginData.Username + " : " + loginData.Password);
             var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.name == loginData.Username && u.password == loginData.Password);
-
+            Console.WriteLine("Found user in database.");
             if (user == null)
             {
-                return Unauthorized("Invalid username or password.");
+                Error error = new Error
+                {
+                    StatusCode = 401,
+                    Message = "Invalid username or password."
+                };
+                return Unauthorized(error);
             }
 
-            // Return user info (not password or address)
-            return Ok(new
-            {
-                user.UserProfileId,
-                user.name,
-                user.profilePicture,
-                user.phoneNumber,
-                user.email,
-            });
+            return Ok(user);
         }
     }
 }
