@@ -1,4 +1,5 @@
-﻿using DCAssignment2A.Data;
+﻿using Azure.Core;
+using DCAssignment2A.Data;
 using DCAssignment2A.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -394,6 +395,32 @@ namespace DCAssignment2A.Controllers
             {
                 return StatusCode(500, $"Error updating phone number: {ex.Message}");
             }
+        }
+
+
+        // Attempt to login
+        [HttpGet]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginData loginData)
+        {
+            if (string.IsNullOrWhiteSpace(loginData.Username) || string.IsNullOrWhiteSpace(loginData.Password)) return BadRequest("Username and password are required.");
+
+            var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.name == loginData.Username && u.password == loginData.Password);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
+            // Return user info (not password or address)
+            return Ok(new
+            {
+                user.UserProfileId,
+                user.name,
+                user.profilePicture,
+                user.phoneNumber,
+                user.email,
+            });
         }
     }
 }
