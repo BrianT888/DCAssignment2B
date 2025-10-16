@@ -1,4 +1,6 @@
-﻿namespace DCAssignment2A.Models
+﻿using System;
+
+namespace APIClasses
 {
     public class Transaction
     {
@@ -6,6 +8,6 @@
         public int BankAccountId { get; set; } // Foreign key to BankAccount
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DCAssignment2A.Data;
-using DCAssignment2A.Models;
+using APIClasses;
 
 namespace DCAssignment2A.Controllers
 {

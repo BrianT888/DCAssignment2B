@@ -1,4 +1,4 @@
-﻿using DCAssignment2A.Models;
+﻿using APIClasses;
 using Microsoft.EntityFrameworkCore;
 
 namespace DCAssignment2A.Data
