@@ -31,11 +31,14 @@
     <!-- Bank Accounts -->
     <div class="section">
         <h3>Bank Accounts:</h3>
-        <ul>
-            <li>• Chequing - <span id="chequingBalance">$0.00</span></li>
-            <li>• Savings - <span id="savingsBalance">$0.00</span></li>
+        <select id="bankAccountDropdown">
+            <option value="">Select an account</option>
+        </select>
+        <ul id="accountDetails">
+            <li>• Account Number: <span id="accountNumber">-</span></li>
+            <li>• Bank Name: <span id="bankName">-</span></li>
+            <li>• Balance: $<span id="balance">0.00</span></li>
         </ul>
-        <button class="btn-sub" id="makeNewAccountBtn">Make new account</button>
     </div>
 
     <!-- Recent Transactions -->
@@ -51,9 +54,7 @@
             </thead>
             <tbody id="transactionTableBody">
                 <tr>
-                    <td colspan="3" style="text-align: center; padding: 20px; color: #999;">
-                        No transactions yet
-                    </td>
+                    <td colspan="3" style="text-align: center; padding: 20px; color: #999;"> No transactions yet</td>
                 </tr>
             </tbody>
         </table>
