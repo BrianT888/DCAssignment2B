@@ -19,7 +19,7 @@
 
     if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('currentUser', data.name);
+        localStorage.setItem('currentUser', data.name);   // Add username to localStorage to be passed to userDashboard
         console.log(data);
         if (data.userProfileId < 3) {//if the id is less that x then its an admin
             window.location.href = '/Home/AdminDashboard';

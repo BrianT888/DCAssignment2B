@@ -1,5 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', async () => {
-    const currentUserName = localStorage.getItem('currentUser');
+    const currentUserName = localStorage.getItem('currentUser');   // Get the current user's username
     console.log('currentUserName from localStorage:', currentUserName);
 
     if (!currentUserName) {
