@@ -1,4 +1,4 @@
-﻿namespace DCAssignment2A.Models
+﻿namespace APIClasses
 {
     public class LoginData
     {

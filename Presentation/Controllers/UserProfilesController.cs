@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using APIClasses;
-using DCAssignment2A.Models;
 using Newtonsoft.Json;
 
 namespace Presentation.Controllers

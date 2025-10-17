@@ -40,7 +40,7 @@ namespace DCAssignment2A.Data
                 var name = GenerateUniqueUsername();
                 var email = $"{name.ToLower()}@gmail.com";
                 var address = $"{random.Next(1, 999)} {streets[random.Next(streets.Length)]}, Perth WA";
-                var password = "password{i}";
+                var password = $"password{i}";
 
                 // Ensure unique phone number using a hashset
                 string phone;
