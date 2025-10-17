@@ -60,8 +60,8 @@
                 tbody.innerHTML = '';
                 if (transactions.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#999;">No transactions</td></tr>`;
-                } else {
-                    transactions.sort((a, b) => new Date(b.Date) - new Date(a.Date)); // sort by newest first
+                } else {                  
+                    transactions.sort((a, b) => new Date(b.date) - new Date(a.date)); // sort by newest first
 
                     transactions.forEach(t => {
                         const row = document.createElement('tr');
