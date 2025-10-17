@@ -39,26 +39,5 @@ namespace Presentation.Controllers
                 return BadRequest(error);//idk what to do sending back an error
             }    
         }
-
-        [HttpGet]
-        [Route("Name/{name}")]
-        public async Task<ActionResult<UserProfile>> GetUserProfileByName(string name) 
-        {
-            if (string.IsNullOrWhiteSpace(name)) BadRequest("Name is required.");
-
-            RestRequest request = new RestRequest($"api/userprofiles/Name/{name}", Method.Get);
-            RestResponse response = await client.ExecuteAsync(request);
-
-            if (response.IsSuccessful)
-            {
-                UserProfile u = JsonConvert.DeserializeObject<UserProfile>(response.Content);
-                return Ok(u);
-            }
-            else
-            {
-                Error error = JsonConvert.DeserializeObject<Error>(response.Content);
-                return BadRequest(error);
-            }
-        }
     }
 }

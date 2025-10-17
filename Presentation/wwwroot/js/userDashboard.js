@@ -1,27 +1,17 @@
 ﻿document.addEventListener('DOMContentLoaded', async () => {
-    const currentUserName = localStorage.getItem('currentUser');   // Get the current user's username
-    console.log('currentUserName from localStorage:', currentUserName);
+    console.log('DOMContentLoaded event fired');
+    const currentUserJSON = localStorage.getItem('currentUser');   // Get the current user's username
+    localStorage.clear(); // Clear the currentUser from localStorage after retrieving it
 
-    if (!currentUserName) {
+    if (!currentUserJSON) {
+        console.log("Redirect back to login")
         // User not logged in, redirect to login page
-        window.location.href = '/login';
+        window.location.href = '/Home/Index';
         return;
     }
 
-    try {
-        const response = await fetch(`http://localhost:5082/api/userprofiles/Name/${currentUserName}`);
-        console.log('Fetch response:', response);
+    console.log('currentUserJSON parsing');
+    const currentUser = JSON.parse(currentUserJSON);
+    document.getElementById('userName').textContent = currentUser.name;
 
-        if (response.ok) {
-            const userProfile = await response.json();
-            console.log('Fetched userProfile:', userProfile);
-            document.getElementById('userName').textContent = userProfile.name;
-        }
-        else {
-            console.error('Failed to fetch user profile');
-        }
-    }
-    catch (error) {
-        console.error('Error fetching user profile: ', error);
-    }
 });
