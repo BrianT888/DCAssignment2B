@@ -44,6 +44,7 @@
     <!-- Recent Transactions -->
     <div class="section">
         <h3>Recent Transactions:</h3>
+
         <div class="transactions-container">
             <table>
                 <thead>
@@ -55,12 +56,17 @@
                 </thead>
                 <tbody id="transactionTableBody">
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 20px; color: #999;">
-                            No transactions yet
-                        </td>
+                        <td colspan="3" style="text-align: center; padding: 20px; color: #999;"> No transactions </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="filter-bar">
+            <label>From: <input type="date" id="fromDate"></label>
+            <label>To: <input type="date" id="toDate"></label>
+            <button class="btn-main" id="filterBtn">Filter</button>
+            <button class="btn-secondary" id="resetFilterBtn">Reset</button>
         </div>
     </div>
 </div>
@@ -96,11 +102,13 @@
     .transactions-container tr:hover {
         background: #f1f1f1;
     }
-
-    footer {
-    position: relative;
-    margin-top: 500px;
-    z-index: 0; 
+    
+    .filter-bar {
+        margin-bottom: 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
     
 </style>
 

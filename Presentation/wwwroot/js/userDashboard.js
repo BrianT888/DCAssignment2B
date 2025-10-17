@@ -47,13 +47,13 @@
         });
 
         // Displays latest information and transaction history of a bank account
+        var transactions;
         async function updateAccountDetails(accountNumber) {
             try {
                 // Fetch transactions for this account
                 const transactionsResponse = await fetch(`/api/Transactions/GetTransactionsForAccount/${accountNumber}`);
                 if (!transactionsResponse.ok) throw new Error('Failed to fetch transactions');
-                const transactions = await transactionsResponse.json();
-                console.log('Fetched transactions:', transactions);
+                transactions = await transactionsResponse.json();
 
                 // Update transaction table
                 const tbody = document.getElementById('transactionTableBody');
@@ -83,8 +83,53 @@
                 console.error('Error updating account details:', error);
             }
         }
+
+
+        // -- Logic for filtering by date ---
+        document.getElementById('filterBtn').addEventListener('click', () => {
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+            let filtered = transactions;   // all transactions (for this account)
+
+            // Filter the list of transactions to be within the date range
+            if (fromDate) filtered = filtered.filter(t => new Date(t.date) >= new Date(fromDate));
+            if (toDate) filtered = filtered.filter(t => new Date(t.date) <= new Date(toDate));
+
+            updateTransactions(filtered);
+        });
+
+        // Reset the list to be unfiltered
+        document.getElementById('resetFilterBtn').addEventListener('click', () => {
+            document.getElementById('fromDate').value = '';
+            document.getElementById('toDate').value = '';
+            updateTransactions(transactions);
+        });
+
+        // Display the new (filtered) list of transactions
+        function updateTransactions(transactions) {
+            const tbody = document.getElementById('transactionTableBody');
+            tbody.innerHTML = '';
+            if (transactions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#999;">No transactions</td></tr>`;
+                return;
+            }
+
+            transactions.sort((a, b) => new Date(b.date) - new Date(a.date)); // sort the list (newest first)
+            transactions.forEach(t => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(t.date).toLocaleDateString('en-GB')}</td>
+                    <td>${t.description}</td>
+                    <td>${t.amount}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
     } catch (err) {
         console.error('Error fetching bank accounts:', err);
     }
+
+
+
 
 });
