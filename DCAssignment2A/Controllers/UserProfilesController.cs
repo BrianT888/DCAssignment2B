@@ -307,7 +307,7 @@ namespace DCAssignment2A.Controllers
         {
             if (id < 0) return BadRequest("Invalid input. ID value must be a positive integer.");
             if (string.IsNullOrWhiteSpace(newEmail)) return BadRequest("Email cannot be empty.");
-            if (!Regex.IsMatch(newEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) return BadRequest("Invalid email format.");
+            if (!Regex.IsMatch(newEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) return BadRequest("Invalid email format. Must be in the format: example@example.com");
             if (_context.UserProfiles.Any(u => u.email == newEmail)) return Conflict("Email already exists.");
 
             try
@@ -323,7 +323,6 @@ namespace DCAssignment2A.Controllers
             {
                 return StatusCode(500, $"Error updating email: {ex.Message}");
             }
-
         }
 
         // Update Address

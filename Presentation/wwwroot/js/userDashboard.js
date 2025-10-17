@@ -1,5 +1,4 @@
 ﻿document.addEventListener('DOMContentLoaded', async () => {
-    console.log('DOMContentLoaded event fired');
     const currentUserJSON = localStorage.getItem('currentUser');   // Get the current user's username
     localStorage.clear(); // Clear the currentUser from localStorage after retrieving it
 
@@ -10,7 +9,6 @@
         return;
     }
 
-    console.log('currentUserJSON parsing');
     const currentUser = JSON.parse(currentUserJSON);
 
     // Set name
@@ -130,6 +128,10 @@
     }
 
 
-
+    // Redirect to profile page when profile link clicked
+    document.getElementById('profileLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        window.location.href = '/Home/Profile';
+    })
 
 });

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RestSharp;
-using APIClasses;
+﻿using APIClasses;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RestSharp;
+using System.Text.RegularExpressions;
 
 namespace Presentation.Controllers
 {
@@ -43,6 +44,48 @@ namespace Presentation.Controllers
                 Error error = JsonConvert.DeserializeObject<Error>(response.Content);
                 return BadRequest(error);//idk what to do sending back an error
             }    
+        }
+
+        // Update Email
+        [HttpPut]
+        [Route("UpdateEmail/{id}/{newEmail}")]
+        public async Task<IActionResult> UpdateEmail(int id, string newEmail)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdateEmail/{id}/{newEmail}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
+        }
+
+        // Update Phone Number
+        [HttpPut]
+        [Route("UpdatePhoneNumber/{id}/{newPhoneNumber}")]
+        public async Task<IActionResult> UpdatePhoneNumber(int id, string newPhoneNumber)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdatePhoneNumber/{id}/{newPhoneNumber}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
+        }
+
+        // Update Password
+        [HttpPut]
+        [Route("UpdatePassword/{id}/{newPassword}")]
+        public async Task<IActionResult> UpdatePassword(int id, string newPassword)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdatePassword/{id}/{newPassword}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
         }
     }
 }
