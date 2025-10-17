@@ -14,8 +14,7 @@ namespace Presentation.Controllers
         //get transactions for specific bank accounts
         [HttpGet]
         [Route("GetTransactionsForAccount/{accountNumber}")]
-
-        public async Task<IActionResult> GetTransactionsForAccount(string accountNumber)
+        public async Task<IActionResult> GetTransactionsByAccount(string accountNumber)
         {
             if (accountNumber == null)
             {
@@ -25,12 +24,12 @@ namespace Presentation.Controllers
                     StatusCode = 400,
                     Message = "Account Number is null"
                 };
-                BadRequest(error);
+                return BadRequest(error);
             }
 
             Console.WriteLine("Starting API Request to backend");
 
-            RestRequest request = new RestRequest($"api/transactions/Transactions/{accountNumber}", Method.Get);
+            RestRequest request = new RestRequest($"api/Transactions/GetTransactionsForAccount/{accountNumber}", Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
 
             Console.WriteLine("Received response from backend");
@@ -64,7 +63,7 @@ namespace Presentation.Controllers
                     StatusCode = 400,
                     Message = "One or both account numbers are null"
                 };
-                BadRequest(error);
+                return BadRequest(error);
             }
             if (amount <= 0)
             {
@@ -74,7 +73,7 @@ namespace Presentation.Controllers
                     StatusCode = 400,
                     Message = "Transfer amount must be positive"
                 };
-                BadRequest(error);
+                return BadRequest(error);
             }
             Console.WriteLine("Starting API Request to backend for withdrawal");
             // First, withdraw from the source account

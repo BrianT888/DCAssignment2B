@@ -204,9 +204,9 @@ namespace DCAssignment2A.Controllers
             }
         }
 
-        //Get a list of transactions for a specific bank account by account number
-        [HttpGet("Transactions/{accountNumber}")]
-        public async Task<ActionResult<IEnumerable<BankAccount>>> GetAllBankAccountsByUser(int accountNumber)
+        // Get a list of transactions for a specific bank account by account number
+        [HttpGet("GetTransactionsForAccount/{accountNumber}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetAllBankTranscationsByAccountNumber(int accountNumber)
         {
             try
             {
