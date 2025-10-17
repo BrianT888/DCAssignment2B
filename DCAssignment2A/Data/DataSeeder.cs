@@ -10,8 +10,8 @@ namespace DCAssignment2A.Data
         private static readonly int numUsers = 10;     // Determines how many UserProfiles and BankAccounts to make
         public static void Seed(DBManager context)
         {
-            // Only seed if empty
-            if (context.UserProfiles.Any()) return;
+            // Only seed if there are no profiles other than the 2 admin accounts
+            if (context.UserProfiles.Count() > 2) return;
 
             var random = new Random();
 
@@ -51,7 +51,6 @@ namespace DCAssignment2A.Data
 
                 var userProfile = new UserProfile
                 {
-                    UserProfileId = i,
                     name = name,
                     email = email,
                     address = address,

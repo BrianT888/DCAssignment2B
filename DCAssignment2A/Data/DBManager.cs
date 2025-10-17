@@ -32,6 +32,30 @@ namespace DCAssignment2A.Data
                 .WithMany()
                 .HasForeignKey(t => t.BankAccountId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Hardcoded admin profiles
+            modelBuilder.Entity<UserProfile>().HasData(
+                new UserProfile
+                {
+                    UserProfileId = 1,
+                    name = "admin1",
+                    email = "admin1@bankapp.com",
+                    address = "Head Office",
+                    phoneNumber = "0411122233",
+                    password = "adminpass",
+                    profilePicture = null
+                },
+                new UserProfile
+                {
+                    UserProfileId = 2,
+                    name = "admin2",
+                    email = "admin2@bankapp.com",
+                    address = "Head Office",
+                    phoneNumber = "0411122234",
+                    password = "adminpass",
+                    profilePicture = null
+                }
+            );
         }
     }
 }
