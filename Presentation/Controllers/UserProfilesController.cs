@@ -18,7 +18,12 @@ namespace Presentation.Controllers
             if (loginData == null)
             {
                 Console.WriteLine("Login data is null");
-                BadRequest("Error");
+                Error error = new Error
+                {
+                    StatusCode = 400,
+                    Message = "Login data is null"
+                };
+                BadRequest(error);
             }
             
             Console.WriteLine("Starting API Request to backend");
