@@ -21,7 +21,8 @@
 
     // Back button
     document.getElementById('backBtn').addEventListener('click', () => {
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        console.log('Back Button Pressed');
+        localStorage.setItem('currentUser', JSON.stringify(user));
         window.location.href = '/Home/UserDashboard';
     });
 
