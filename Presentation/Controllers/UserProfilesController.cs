@@ -54,8 +54,7 @@ namespace Presentation.Controllers
             var request = new RestRequest($"api/UserProfiles/UpdateEmail/{id}/{newEmail}", Method.Put);
             var response = await client.ExecuteAsync(request);
 
-            if (response.IsSuccessful)
-                return Ok(response.Content);
+            if (response.IsSuccessful) return Ok(response.Content);
 
             return StatusCode((int)response.StatusCode, response.Content);
         }
@@ -68,8 +67,7 @@ namespace Presentation.Controllers
             var request = new RestRequest($"api/UserProfiles/UpdatePhoneNumber/{id}/{newPhoneNumber}", Method.Put);
             var response = await client.ExecuteAsync(request);
 
-            if (response.IsSuccessful)
-                return Ok(response.Content);
+            if (response.IsSuccessful) return Ok(response.Content);
 
             return StatusCode((int)response.StatusCode, response.Content);
         }
@@ -82,8 +80,7 @@ namespace Presentation.Controllers
             var request = new RestRequest($"api/UserProfiles/UpdatePassword/{id}/{newPassword}", Method.Put);
             var response = await client.ExecuteAsync(request);
 
-            if (response.IsSuccessful)
-                return Ok(response.Content);
+            if (response.IsSuccessful) return Ok(response.Content);
 
             return StatusCode((int)response.StatusCode, response.Content);
         }

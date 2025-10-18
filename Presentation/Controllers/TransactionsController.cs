@@ -92,7 +92,7 @@ namespace Presentation.Controllers
             {
                 //if deposit fails probably rerun the withdraw request backwards now to return money if it can even fail?
                 Error error = JsonConvert.DeserializeObject<Error>(depositResponse.Content);
-                return BadRequest(error);
+                return BadRequest(error);       
             }
             return Ok($"Successful Transfer of {amount} from {fromAccountNumber} to {toAccountNumber}");
         }

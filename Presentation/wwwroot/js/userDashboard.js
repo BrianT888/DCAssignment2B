@@ -134,4 +134,10 @@
         window.location.href = '/Home/Profile';
     })
 
+    // Redirect to transfer page when transfer link clicked
+    document.getElementById('transferLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        window.location.href = '/Home/Transfer';
+    });
+
 });

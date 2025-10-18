@@ -143,14 +143,16 @@ namespace DCAssignment2A.Controllers
         [Route("Withdraw/{accountNumber}/{amount}")]
         public async Task<IActionResult> Withdraw(int accountNumber, decimal amount)
         {
-            if (accountNumber <= 0) return BadRequest("Invalid input. Account number must be greater than zero.");
-            if (amount <= 0) return BadRequest("Invalid input. Withdrawal amount must be positive.");
+            if (accountNumber <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Account number must be greater than zero." });
+            if (amount <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Withdrawal amount must be positive." });
+            if (!_context.BankAccounts.Any(b => b.BankAccountNumber == accountNumber)) return NotFound(new Error { StatusCode = 404, Message = "Account not found." });
+
 
             try
             {
                 var bankAccount = await _context.BankAccounts.FirstOrDefaultAsync(b => b.BankAccountNumber == accountNumber);
                 if (bankAccount == null) return NotFound("Bank account not found.");
-                if (bankAccount.balance < amount) return BadRequest("Insufficient funds.");
+                if (bankAccount.balance < amount) return BadRequest(new Error { StatusCode = 400, Message = "Insufficient funds." });
 
                 bankAccount.balance -= amount;
                 var transaction = new Transaction
@@ -163,11 +165,11 @@ namespace DCAssignment2A.Controllers
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
 
-                return Ok($"Successful Withdrawal of {amount} from {accountNumber}");
+                return Ok(new { Message = $"Successful withdrawal of {amount} from account {accountNumber}" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error performing withdrawal: {ex.Message}");
+                return StatusCode(500, new Error { StatusCode = 500, Message = $"Error performing withdrawal: {ex.Message}" });
             }
         }
 
@@ -176,8 +178,9 @@ namespace DCAssignment2A.Controllers
         [Route("Deposit/{accountNumber}/{amount}")]
         public async Task<IActionResult> Deposit(int accountNumber, decimal amount)
         {
-            if (accountNumber <= 0) return BadRequest("Invalid input. Account number must be greater than zero.");
-            if (amount <= 0) return BadRequest("Invalid input. Deposit amount must be positive.");
+            if (accountNumber <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Account number must be greater than zero." });
+            if (amount <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Deposit amount must be positive." });
+            if (!_context.BankAccounts.Any(b => b.BankAccountNumber == accountNumber)) return NotFound(new Error { StatusCode = 404, Message = "Account not found." });
 
             try
             {
@@ -195,11 +198,11 @@ namespace DCAssignment2A.Controllers
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
-                return Ok($"Successful Deposit of {amount} to {accountNumber}");
+                return Ok(new { Message = $"Successful deposit of {amount} to account {accountNumber}" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error performing deposit: {ex.Message}");
+                return StatusCode(500, new Error { StatusCode = 500, Message = $"Error performing deposit: {ex.Message}" });
 
             }
         }

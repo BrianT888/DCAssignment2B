@@ -38,5 +38,10 @@ namespace Presentation.Controllers
         {
             return View();
         }
+
+        public IActionResult Transfer()
+        {
+            return View();
+        }
     }
 }
