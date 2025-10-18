@@ -24,7 +24,7 @@ namespace Presentation.Controllers
                     StatusCode = 400,
                     Message = "Login data is null"
                 };
-                BadRequest(error);
+                return BadRequest(error);
             }
             
             Console.WriteLine("Starting API Request to backend");
@@ -35,14 +35,14 @@ namespace Presentation.Controllers
             
             Console.WriteLine("Received response from backend");
 
-            if (response.IsSuccessStatusCode)//or is it isSuccess?
+            if (response.IsSuccessStatusCode)
             {
                 UserProfile u = JsonConvert.DeserializeObject<UserProfile>(response.Content);
                 return Ok(u);
             } else
             {
                 Error error = JsonConvert.DeserializeObject<Error>(response.Content);
-                return BadRequest(error);//idk what to do sending back an error
+                return BadRequest(error);
             }    
         }
 

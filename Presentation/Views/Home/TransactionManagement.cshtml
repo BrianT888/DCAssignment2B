@@ -1,0 +1,119 @@
+﻿@{
+	ViewData["Title"] = "Transaction Management";
+}
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="#" id="homeLink">Home</a>
+    <a href="#" id="profileLink">Profile</a>
+    <a href="#" id="userManagementLink">User Management</a>
+    <a href="#" id="logoutBtn">Log out</a>
+</div>
+
+<div class="container">
+    <!-- Recent Transactions -->
+    <div class="section">
+        <h3>Recent Transactions:</h3>
+
+        <div class="transactions-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>BankAccount</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionTableBody">
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 20px; color: #999;"> No transactions </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="filter-bar">
+            <label>From: <input type="date" id="fromDate"></label>
+            <label>To: <input type="date" id="toDate"></label>
+            <button class="btn-main" id="filterBtn">Filter</button>
+            <button class="btn-secondary" id="resetFilterBtn">Reset</button>
+        </div>
+
+        <div class="sort-bar">
+            <label>Sort by:
+                <select id="sortType">
+                    <option value="ascending">Ascending Date</option>
+                    <option value="descending">Descending Date</option>
+                </select>
+            </label>
+			<button class="btn-main" id="sortBtn">Sort</button>
+    </div>
+</div>
+
+<style>
+    /* Navigation Bar */
+    .nav-bar {
+        display: flex;
+        gap: 15px;
+        padding: 10px 20px;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    .nav-bar a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 500;
+    }
+
+    /* Scrollable transactions table */
+    .transactions-container {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .transactions-container table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .transactions-container th, .transactions-container td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .transactions-container th {
+        position: sticky;
+        top: 0;
+        background: #f8f8f8;
+        z-index: 2;
+    }
+
+    .transactions-container tr:hover {
+        background: #f1f1f1;
+    }
+
+    .filter-bar {
+        margin-bottom: 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .sort-bar {
+        margin-bottom: 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+</style>
+
+@section Scripts {
+	<script src="~/js/transactionManagement.js"></script>
+}

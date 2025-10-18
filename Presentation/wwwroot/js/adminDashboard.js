@@ -33,5 +33,16 @@
         auditTable.appendChild(row);
     });
 
+    // Redirect
+    document.getElementById('transactionManagementLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(adminProfile));
+        window.location.href = '/Home/TransactionManagement';
+    })
 
+    // logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        //storage is already cleared at top so shouldn't need another line
+        //localStorage.clear();
+        window.location.href = '/Home/Index';
+    })
 });
