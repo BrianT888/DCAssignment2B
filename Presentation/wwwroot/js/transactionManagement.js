@@ -10,6 +10,7 @@
     const adminProfile = JSON.parse(currentUserJSON);
 
     var transactions;
+
     async function loadTable() {
         try {
             // Fetch transactions
@@ -44,21 +45,16 @@
 
     loadTable();
 
-    var altered;//extra var to be altered when filtering/sorting to leave transactions intact
-
     // -- Logic for filtering by date ---
     document.getElementById('filterBtn').addEventListener('click', () => {
         const fromDate = document.getElementById('fromDate').value;
         const toDate = document.getElementById('toDate').value;
-        altered = transactions;   // all transactions (for this account)
-
         // Filter the list of transactions to be within the date range
-        if (fromDate) altered = altered.filter(t => new Date(t.date) >= new Date(fromDate));
-        if (toDate) altered = altered.filter(t => new Date(t.date) <= new Date(toDate));
+        if (fromDate) transactions = transactions.filter(t => new Date(t.date) >= new Date(fromDate));
+        if (toDate) transactions = transactions.filter(t => new Date(t.date) <= new Date(toDate));
 
-        altered.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        updateTransactions(altered);
+        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+        updateTransactions(transactions);
     });
 
     // Display the new list of transactions
@@ -87,7 +83,7 @@
     document.getElementById('sortBtn').addEventListener('click', () => {
         const sortType = document.getElementById('sortType').value
 
-        altered.sort((t1, t2) => {
+        transactions.sort((t1, t2) => {
             const date1 = new Date(t1.date);
             const date2 = new Date(t2.date);
 
@@ -98,15 +94,21 @@
             }
         });
 
-        updateTransactions(altered);
+        updateTransactions(transactions);
     });
 
     // Reset the list to be unfiltered
     document.getElementById('resetFilterBtn').addEventListener('click', () => {
         document.getElementById('fromDate').value = '';
         document.getElementById('toDate').value = '';
-        altered = transactions;
         loadTable();
+    });
+
+    //Search by name
+    document.getElementById('searchBtn').addEventListener('click', () => {
+        const userSearch = document.getElementById('userSearch').value.toLowerCase();
+        transactions = transactions.filter(t => t.name.toLowerCase().includes(userSearch));
+        updateTransactions(transactions);
     });
 
     // Redirect

@@ -37,7 +37,7 @@
             <label>From: <input type="date" id="fromDate"></label>
             <label>To: <input type="date" id="toDate"></label>
             <button class="btn-main" id="filterBtn">Filter</button>
-            <button class="btn-secondary" id="resetFilterBtn">Reset</button>
+            <button class="btn-secondary" id="resetFilterBtn">Reset All Filters</button>
         </div>
 
         <div class="sort-bar">
@@ -48,6 +48,14 @@
                 </select>
             </label>
 			<button class="btn-main" id="sortBtn">Sort</button>
+        </div>
+        
+        <div class="transfer-form">
+            <label for="username search">Username Search:</label>
+            <input type="text" id="userSearch" placeholder="Enter UserName" />
+
+            <button id="searchBtn" class="btn-main">Search User</button>
+        </div>
     </div>
 </div>
 
@@ -111,6 +119,35 @@
         display: flex;
         gap: 10px;
         align-items: center;
+    }
+
+    .transfer-form input {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-main {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    .btn-main:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background: #ccc;
+        color: black;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
     }
 </style>
 
