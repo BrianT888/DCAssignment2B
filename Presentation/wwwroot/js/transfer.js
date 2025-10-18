@@ -86,7 +86,7 @@
 
         // Attempt to transfer
         try {
-            const response = await fetch(`http://localhost:5082/api/Transactions/Transfer/${fromAccount}/${toAccount}/${amount}`, { method: 'PUT' });
+            const response = await fetch(`http://localhost:5082/api/Transactions/Transfer/${fromAccount}/${toAccount}/${amount}/${description}`, { method: 'PUT' });
 
             if (response.ok) {
                 messageBox.style.color = 'green';

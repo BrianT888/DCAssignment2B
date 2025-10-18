@@ -52,8 +52,8 @@ namespace Presentation.Controllers
         //money transfer now ig
 
         [HttpPut]
-        [Route("Transfer/{fromAccountNumber}/{toAccountNumber}/{amount}")]
-        public async Task<IActionResult> Transfer(string fromAccountNumber, string toAccountNumber, decimal amount)
+        [Route("Transfer/{fromAccountNumber}/{toAccountNumber}/{amount}/{description}")]
+        public async Task<IActionResult> Transfer(string fromAccountNumber, string toAccountNumber, decimal amount, string description)
         {
             if (fromAccountNumber == null || toAccountNumber == null)
             {
@@ -77,7 +77,7 @@ namespace Presentation.Controllers
             }
             Console.WriteLine("Starting API Request to backend for withdrawal");
             // First, withdraw from the source account
-            RestRequest withdrawRequest = new RestRequest($"api/transactions/Withdraw/{fromAccountNumber}/{amount}", Method.Put);
+            RestRequest withdrawRequest = new RestRequest($"api/transactions/Withdraw/{fromAccountNumber}/{amount}/{description}", Method.Put);
             RestResponse withdrawResponse = await client.ExecuteAsync(withdrawRequest);
             if (!withdrawResponse.IsSuccessStatusCode)
             {
@@ -86,7 +86,7 @@ namespace Presentation.Controllers
             }
             Console.WriteLine("Withdrawal successful, starting deposit to target account");
             // Then, deposit to the target account
-            RestRequest depositRequest = new RestRequest($"api/transactions/Deposit/{toAccountNumber}/{amount}", Method.Put);
+            RestRequest depositRequest = new RestRequest($"api/transactions/Deposit/{toAccountNumber}/{amount}/{description}", Method.Put);
             RestResponse depositResponse = await client.ExecuteAsync(depositRequest);
             if (!depositResponse.IsSuccessStatusCode)
             {

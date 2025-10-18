@@ -140,11 +140,12 @@ namespace DCAssignment2A.Controllers
 
         //Withdaw
         [HttpPut]
-        [Route("Withdraw/{accountNumber}/{amount}")]
-        public async Task<IActionResult> Withdraw(int accountNumber, decimal amount)
+        [Route("Withdraw/{accountNumber}/{amount}/{desc}")]
+        public async Task<IActionResult> Withdraw(int accountNumber, decimal amount, string desc)
         {
             if (accountNumber <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Account number must be greater than zero." });
             if (amount <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Withdrawal amount must be positive." });
+            //desc validation required
             if (!_context.BankAccounts.Any(b => b.BankAccountNumber == accountNumber)) return NotFound(new Error { StatusCode = 404, Message = "Account not found." });
 
 
@@ -160,7 +161,7 @@ namespace DCAssignment2A.Controllers
                     BankAccountId = bankAccount.BankAccountId,
                     Date = DateTime.Now,
                     Amount = -amount, // Negative amount for withdrawal
-                    Description = "Withdrawal"
+                    Description = desc
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
@@ -175,11 +176,12 @@ namespace DCAssignment2A.Controllers
 
         //Deposit
         [HttpPut]
-        [Route("Deposit/{accountNumber}/{amount}")]
-        public async Task<IActionResult> Deposit(int accountNumber, decimal amount)
+        [Route("Deposit/{accountNumber}/{amount}/{desc}")]
+        public async Task<IActionResult> Deposit(int accountNumber, decimal amount, string desc)
         {
             if (accountNumber <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Account number must be greater than zero." });
             if (amount <= 0) return BadRequest(new Error { StatusCode = 400, Message = "Invalid input. Deposit amount must be positive." });
+            //desc validation required
             if (!_context.BankAccounts.Any(b => b.BankAccountNumber == accountNumber)) return NotFound(new Error { StatusCode = 404, Message = "Account not found." });
 
             try
@@ -194,7 +196,7 @@ namespace DCAssignment2A.Controllers
                     BankAccountId = bankAccount.BankAccountId,
                     Date = DateTime.Now,
                     Amount = amount, // Positive amount for deposit
-                    Description = "Deposit"
+                    Description = desc
                 };
                 _context.Transactions.Add(transaction);
                 await _context.SaveChangesAsync();
