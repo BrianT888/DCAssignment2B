@@ -134,4 +134,11 @@
         window.location.href = '/Home/Profile';
     })
 
+    // Redirect to profile page when profile link clicked
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        //storage is already cleared at top so shouldn't need another line
+        //localStorage.clear();
+        window.location.href = '/Home/Index';
+    })
+
 });
