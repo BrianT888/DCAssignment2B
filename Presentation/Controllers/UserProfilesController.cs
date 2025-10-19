@@ -88,6 +88,34 @@ namespace Presentation.Controllers
             return StatusCode((int)response.StatusCode, response.Content);
         }
 
+        // Update Name
+        [HttpPut]
+        [Route("UpdateName/{id}/{newName}")]
+        public async Task<IActionResult> UpdateName(int id, string newName)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdateName/{id}/{newName}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
+        }
+
+        // Update Address
+        [HttpPut]
+        [Route("UpdateAddress/{id}/{newAddress}")]
+        public async Task<IActionResult> UpdateAddress(int id, string newAddress)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdateAddress/{id}/{newAddress}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
+        }
+
         // Get all users
         [HttpGet]
         [Route("GetAll")]

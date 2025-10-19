@@ -19,6 +19,13 @@
 
     if (response.ok) {
         const data = await response.json();
+
+        // Don't log in if the account has been deactivated
+        if (!data.isActive) {
+            document.getElementById('errorMessage').textContent = 'Your account is inactive. Please contact an admin.';
+            return;
+        }
+
         localStorage.setItem('currentUser', JSON.stringify(data));   // Add user to localStorage to be passed to the dashboard
         console.log(data);
         if (data.userProfileId < 3) {//if the id is less that x then its an admin

@@ -55,7 +55,6 @@
                     <button class="btn-main status-btn" data-id="${user.userProfileId}">
                         ${user.isActive ? "Deactivate" : "Activate"}
                     </button>
-                    <button class="btn-main reset-btn" data-id="${user.userProfileId}">Reset Password</button>
                 </td>
             `;
             tableBody.appendChild(tr);
@@ -93,7 +92,13 @@
         document.querySelectorAll(".edit-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 const id = btn.dataset.id;
-                window.location.href = `/Home/EditUser/${id}`;
+                const user = allUsers.find(u => u.userProfileId == id)
+                if (!user) {
+                    alert("User not found!");
+                    return;
+                }
+                localStorage.setItem("selectedUser", JSON.stringify(user));
+                window.location.href = `/Home/EditUser`;
             });
         });
 
@@ -111,23 +116,6 @@
                 } catch (err) {
                     console.error(err);
                     alert("Error updating status.");
-                }
-            });
-        });
-
-        document.querySelectorAll(".reset-btn").forEach(btn => {
-            btn.addEventListener("click", async () => {
-                const id = btn.dataset.id;
-                const newPassword = prompt("Enter a new password for this user:");
-                if (!newPassword) return alert("Password reset cancelled.");
-
-                try {
-                    const response = await fetch(`http://localhost:5082/api/UserProfiles/UpdatePassword/${id}/${encodeURIComponent(newPassword)}`, { method: 'PUT' });
-                    if (response.ok) alert("Password reset successfully.");
-                    else { const errText = await response.text(); alert(`Failed to reset password: ${errText}`); }
-                } catch (err) {
-                    console.error(err);
-                    alert("Error resetting password.");
                 }
             });
         });
