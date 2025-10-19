@@ -1,12 +1,14 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
     const profileJSON = localStorage.getItem('selectedUser');
-    localStorage.removeItem('selectedUser'); // clear after retrieving
+    const adminProfileJSON = localStorage.getItem('currentUser');
+    localStorage.clear(); // clear after retrieving
 
     if (!profileJSON) {
         window.location.href = '/Home/UserManagement';
         return;
     }
 
+    const adminProfile = JSON.parse(adminProfileJSON);
     const user = JSON.parse(profileJSON);
     const base64String = user.profilePicture;
 
@@ -20,6 +22,7 @@
 
     // Back button
     document.getElementById('backBtn').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(adminProfile));
         window.location.href = '/Home/UserManagement';
     });
 
@@ -45,6 +48,15 @@
                 document.getElementById(`profile${userProp.charAt(0).toUpperCase() + userProp.slice(1)}`).textContent = newValue;
                 errorBox.style.color = 'green';
                 errorBox.textContent = successMsg;
+
+                const response = await fetch('http://localhost:5082/api/admin/CreateLog', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userId: adminProfile.userProfileId,
+                        msg: "Edited a user profile"
+                    })
+                });
             } else {
                 const errText = await response.text();
                 errorBox.style.color = 'red';

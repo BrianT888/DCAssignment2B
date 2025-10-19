@@ -13,7 +13,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            userId: adminProfile.userId,
+            userId: adminProfile.userProfileId,
             msg: "Entered Transaction Management"
         })
     });
@@ -145,7 +145,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: adminProfile.userId,
+                userId: adminProfile.userProfileId,
                 msg: "User Logged out"
             })
         });

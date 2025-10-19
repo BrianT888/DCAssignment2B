@@ -24,7 +24,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            userId: adminProfile.userId,
+            userId: adminProfile.userProfileId,
             msg: "Entered User Management"
         })
     });
@@ -119,6 +119,7 @@
                     return;
                 }
                 localStorage.setItem("selectedUser", JSON.stringify(user));
+                localStorage.setItem("currentUser", JSON.stringify(adminProfile));
                 window.location.href = `/Home/EditUser`;
             });
         });
@@ -132,8 +133,21 @@
 
                 try {
                     const response = await fetch(`http://localhost:5082/api/UserProfiles/ToggleStatus/${id}/${activate}`, { method: "PUT" });
-                    if (response.ok) { alert("User status updated."); loadAllUsers(); }
-                    else alert("Failed to update status.");
+                    if (response.ok) {
+                        alert("User status updated.")
+                        loadAllUsers();
+                        const response = await fetch('http://localhost:5082/api/admin/CreateLog', {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                userId: adminProfile.userProfileId,
+                                msg: activate ? "Activated a user" : "Deactivated a user"
+                            })
+                        });
+                    }
+                    else {
+                        alert("Failed to update status.");
+                    }
                 } catch (err) {
                     console.error(err);
                     alert("Error updating status.");
@@ -184,6 +198,15 @@
                     showFeedback("User created successfully!", "green");
                     createUserForm.reset();
                     loadAllUsers(); // refresh table
+
+                    const response = await fetch('http://localhost:5082/api/admin/CreateLog', {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            userId: adminProfile.userProfileId,
+                            msg: "Created new user"
+                        })
+                    });
                 } else {
                     let errorMsg = "Unknown error";
                     try {
@@ -227,7 +250,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: adminProfile.userId,
+                userId: adminProfile.userProfileId,
                 msg: "User Logged out"
             })
         });

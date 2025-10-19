@@ -13,7 +13,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            userId: adminProfile.userId,
+            userId: adminProfile.userProfileId,
             msg: "Entered Home Page"
         })
     });
@@ -36,7 +36,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: adminProfile.userId,
+                userId: adminProfile.userProfileId,
                 msg: "Entered Profile Customisation"
             })
         });
@@ -52,19 +52,32 @@
     })
 
     // ----- Audit Log Logic -----
-    const auditLogs = [];
+    try {
+        const response = await fetch('http://localhost:5082/api/admin/GetAllLogs');
+        if (!response.ok) throw new Error('Failed to fetch audit logs');
 
-    const auditTable = document.getElementById('auditTable');
+        const logs = await response.json();
+        const auditTable = document.getElementById('auditTable');
 
-    auditLogs.forEach(log => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${log.date}</td>
-            <td>${log.action}</td>
-            <td>${log.user}</td>
+        auditTable.innerHTML = ''; // Clear existing rows
+
+        if (logs.length === 0) {
+            auditTable.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:#999;">No logs yet</td></tr>`;
+            return;
+        }
+
+        logs.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${log.logId}</td>
+            <td>${new Date(log.date).toLocaleString('en-GB')}</td>
+            <td>${log.logMsg}</td>
         `;
-        auditTable.appendChild(row);
-    });
+            auditTable.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading audit logs:', error);
+    }
 
     // Redirect
     document.getElementById('transactionManagementLink').addEventListener('click', () => {
@@ -78,7 +91,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: adminProfile.userId,
+                userId: adminProfile.userProfileId,
                 msg: "User Logged out"
             })
         });

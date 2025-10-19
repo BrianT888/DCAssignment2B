@@ -113,5 +113,25 @@ namespace Presentation.Controllers
                 }
             }
         }
+
+
+        [HttpGet]
+        [Route("GetAllLogs")]
+        public async Task<IActionResult> GetAllLogs()
+        {
+            RestRequest request = new RestRequest("api/Logs", Method.Get);
+            RestResponse response = await client.ExecuteAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Error error = JsonConvert.DeserializeObject<Error>(response.Content);
+                return BadRequest(error);
+            }
+
+            var logs = JsonConvert.DeserializeObject<List<Log>>(response.Content);
+            logs = logs.OrderByDescending(l => l.Date).ToList();
+
+            return Ok(logs);
+        }
     }
 }
