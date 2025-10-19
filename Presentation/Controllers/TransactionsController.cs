@@ -34,22 +34,17 @@ namespace Presentation.Controllers
 
             Console.WriteLine("Received response from backend");
 
-            if (response.IsSuccessStatusCode)//or is it isSuccess?
+            if (response.IsSuccessStatusCode)
             {
-                List<Transaction> transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);//the list might not be ordered by date, but ordered by id?
-                //transactions = transactions.OrderByDescending(t => t.Date).ToList(); //or ascending idk?
+                List<Transaction> transactions = JsonConvert.DeserializeObject<List<Transaction>>(response.Content);
                 return Ok(transactions);
             }
             else
             {
                 Error error = JsonConvert.DeserializeObject<Error>(response.Content);
-                return BadRequest(error);//idk what to do sending back an error
+                return BadRequest(error);
             }
         }
-
-        //filtering method somehow?
-
-        //money transfer now ig
 
         [HttpPut]
         [Route("Transfer/{fromAccountNumber}/{toAccountNumber}/{amount}")]

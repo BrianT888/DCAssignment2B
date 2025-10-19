@@ -39,6 +39,11 @@ namespace Presentation.Controllers
             return View();
         }
 
+        public IActionResult TransactionManagement()
+        {
+            return View();
+        }
+
         public IActionResult UserManagement()
         {
             return View();
