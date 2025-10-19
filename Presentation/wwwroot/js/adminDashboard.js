@@ -18,6 +18,12 @@
         window.location.href = '/Home/Profile';
     })
 
+    // Redirect to profile page when profile link clicked
+    document.getElementById('userManagementLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(adminProfile));
+        window.location.href = '/Home/UserManagement';
+    })
+
     // ----- Audit Log Logic -----
     const auditLogs = [];
 

@@ -87,5 +87,56 @@ namespace Presentation.Controllers
 
             return StatusCode((int)response.StatusCode, response.Content);
         }
+
+        // Get all users
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<ActionResult<IEnumerable<UserProfile>>> GetAllUsers()
+        {
+            try
+            {
+                var request = new RestRequest("api/UserProfiles", Method.Get);
+                RestResponse response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessful)
+                {
+                    var users = JsonConvert.DeserializeObject<List<UserProfile>>(response.Content);
+                    return Ok(users);
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, response.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error retrieving users from business tier: {ex.Message}");
+            }
+        }
+
+
+        [HttpPut]
+        [Route("ToggleStatus/{id}/{status}")]
+        public async Task<IActionResult> ToggleUserStatus(int id, bool status)
+        {
+            try
+            {
+                var request = new RestRequest($"api/UserProfiles/SetActive/{id}/{status}", Method.Put);
+                RestResponse response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessful)
+                {
+                    return Ok(response.Content);
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, response.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error toggling user status: {ex.Message}");
+            }
+        }
     }
 }

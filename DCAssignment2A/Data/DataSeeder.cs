@@ -18,6 +18,7 @@ namespace DCAssignment2A.Data
             foreach (var admin in context.UserProfiles.Where(u => u.profilePicture == null))
             {
                 admin.profilePicture = ProfilePicReader.GetAdminPFP();
+                admin.isActive = true;
             }
             context.SaveChanges();
 
@@ -64,7 +65,8 @@ namespace DCAssignment2A.Data
                     address = address,
                     phoneNumber = phone,
                     password = password,
-                    profilePicture = ProfilePicReader.GetDefaultPFP()
+                    profilePicture = ProfilePicReader.GetDefaultPFP(),
+                    isActive = true
                 };
 
                 userProfiles.Add(userProfile);

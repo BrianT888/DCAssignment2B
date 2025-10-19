@@ -76,5 +76,42 @@ namespace Presentation.Controllers
                 return BadRequest(error);
             }
         }
+
+
+        [HttpPost]
+        [Route("CreateUser")]
+        public async Task<ActionResult<UserProfile>> CreateUser([FromBody] UserProfile newUser)
+        {
+            if (newUser == null)
+            {
+                Error error = new Error{ StatusCode = 400, Message = "User data cannot be null." };
+                return BadRequest(error);
+            }
+
+            RestRequest request = new RestRequest("api/UserProfiles", Method.Post);
+            request.AddJsonBody(newUser);
+
+            RestResponse response = await client.ExecuteAsync(request);
+            Console.WriteLine("Received response from backend");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var createdUser = JsonConvert.DeserializeObject<UserProfile>(response.Content);
+                return Ok(createdUser);
+            }
+            else
+            {
+                try
+                {
+                    var error = JsonConvert.DeserializeObject<Error>(response.Content);
+                    return StatusCode((int)response.StatusCode, error);
+                }
+                catch
+                {
+                    // If deserialization fails, send error
+                    return StatusCode((int)response.StatusCode, new Error { StatusCode = (int)response.StatusCode, Message = response.Content ?? "Unknown error occurred." });
+                }
+            }
+        }
     }
 }
