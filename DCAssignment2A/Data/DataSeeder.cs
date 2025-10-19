@@ -1,4 +1,6 @@
-﻿using DCAssignment2A.Models;
+﻿using APIClasses;
+using DCAssignment2A.Models;
+using NuGet.Protocol;
 using System.Runtime.InteropServices;
 
 namespace DCAssignment2A.Data
@@ -9,8 +11,16 @@ namespace DCAssignment2A.Data
         private static readonly int numUsers = 10;     // Determines how many UserProfiles and BankAccounts to make
         public static void Seed(DBManager context)
         {
-            // Only seed if empty
-            if (context.UserProfiles.Any()) return;
+            // Only seed if there are no profiles other than the 2 admin accounts
+            if (context.UserProfiles.Count() > 2) return;
+
+            // Give admin profiles the admin profile picture
+            foreach (var admin in context.UserProfiles.Where(u => u.profilePicture == null))
+            {
+                admin.profilePicture = ProfilePicReader.GetAdminPFP();
+                admin.isActive = true;
+            }
+            context.SaveChanges();
 
             var random = new Random();
 
@@ -39,7 +49,7 @@ namespace DCAssignment2A.Data
                 var name = GenerateUniqueUsername();
                 var email = $"{name.ToLower()}@gmail.com";
                 var address = $"{random.Next(1, 999)} {streets[random.Next(streets.Length)]}, Perth WA";
-                var password = "password{i}";
+                var password = $"password{i}";
 
                 // Ensure unique phone number using a hashset
                 string phone;
@@ -50,13 +60,13 @@ namespace DCAssignment2A.Data
 
                 var userProfile = new UserProfile
                 {
-                    UserProfileId = i,
                     name = name,
                     email = email,
                     address = address,
                     phoneNumber = phone,
                     password = password,
-                    profilePicture = ProfilePicReader.GetDefaultPFP()
+                    profilePicture = ProfilePicReader.GetDefaultPFP(),
+                    isActive = true
                 };
 
                 userProfiles.Add(userProfile);
@@ -71,29 +81,32 @@ namespace DCAssignment2A.Data
             var usedAccountNumbers = new HashSet<int>();
             var bankAccounts = new List<BankAccount>();
 
-            for (int i = 1; i <= numUsers; i++)
+            foreach (var user in userProfiles)
             {
-                var user = userProfiles[i - 1]; // zero-based index
+                int numBankAccounts = random.Next(1, 5);
 
-                // Ensure unique bank account number using a hash set
-                int accountNumber;
-                do
+                for (int i = 0; i < numBankAccounts; i++)
                 {
-                    accountNumber = random.Next(100000, 999999);
-                } while (!usedAccountNumbers.Add(accountNumber));
+                    // Ensure unique bank account number using a hash set
+                    int accountNumber;
+                    do
+                    {
+                        accountNumber = random.Next(100000, 999999);
+                    } while (!usedAccountNumbers.Add(accountNumber));
 
-                var bankAccount = new BankAccount
-                {
-                    BankAccountId = i,
-                    BankAccountNumber = accountNumber,
-                    BankAccountHolderName = user.name,
-                    BankName = banks[random.Next(banks.Length)],
-                    balance = Math.Round((decimal)(random.NextDouble() * 10000), 2),   // Random balance 0-9999
-                    UserProfileId = user.UserProfileId
-                };
+                    var bankAccount = new BankAccount
+                    {
+                        BankAccountNumber = accountNumber,
+                        BankAccountHolderName = user.name,
+                        BankName = banks[random.Next(banks.Length)],
+                        balance = Math.Round((decimal)(random.NextDouble() * 20000), 2),   // Random balance 0-19999
+                        UserProfileId = user.UserProfileId
+                    };
 
-                bankAccounts.Add(bankAccount);
+                    bankAccounts.Add(bankAccount);
+                }
             }
+            
 
             context.BankAccounts.AddRange(bankAccounts);
             context.SaveChanges();
@@ -101,23 +114,27 @@ namespace DCAssignment2A.Data
 
             // Generate random Transactions
             var transactions = new List<Transaction>();
-            for (int i = 1; i <= random.Next(numUsers, numUsers*3); i++)
+
+            foreach (var bankAccount in bankAccounts)
             {
-                var account = bankAccounts[random.Next(bankAccounts.Count)];   // Pick random account
-                var isWithdrawal = random.Next(2) == 0;    // 50/50 change of withdrawal or deposit
-                var amount = Math.Round((decimal)(random.NextDouble() * 1000), 2);
-
-                var transaction = new Transaction
+                int numTransactions = random.Next(10, 101); // 10-100 transactions per bank account
+                for (int i = 0; i < numTransactions; i++)
                 {
-                    TransactionId = i,
-                    BankAccountId = account.BankAccountId,
-                    Date = DateTime.Now.AddDays(-random.Next(1, 30)),
-                    Amount = isWithdrawal ? -amount : amount,   // Negative if withdrawal
-                    Description = isWithdrawal ? "Withdrawal" : "Deposit"
-                };
+                    var isWithdrawal = random.Next(2) == 0;    // 50/50 change of withdrawal or deposit
+                    var amount = Math.Round((decimal)(random.NextDouble() * 1000), 2);
 
-                transactions.Add(transaction);
+                    var transaction = new Transaction
+                    {
+                        BankAccountId = bankAccount.BankAccountId,
+                        Date = DateTime.Now.AddDays(-random.Next(1, 1000)),
+                        Amount = isWithdrawal ? -amount : amount,   // Negative if withdrawal
+                        Description = isWithdrawal ? "Withdrawal" : "Deposit"
+                    };
+
+                    transactions.Add(transaction);
+                }
             }
+            
 
             context.Transactions.AddRange(transactions);
             context.SaveChanges();

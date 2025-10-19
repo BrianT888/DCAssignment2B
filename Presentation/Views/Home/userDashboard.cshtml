@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <a href="#">Home</a>
+    <a href="#" id="profileLink">Profile</a>
+    <a href="#" id="transferLink">Transfer</a>
+    <a href="#" id="logoutBtn">Log out</a>
+</div>
+
+<div class="container">
+    <!-- Greeting -->
+    <div class="title">
+        Hi, <span id="userName">No name yet</span>!
+    </div>
+
+    <!-- Bank Accounts -->
+    <div class="section">
+        <h3>Bank Accounts:</h3>
+        <select id="bankAccountDropdown">
+            <option value="">Select an account</option>
+        </select>
+        <ul id="accountDetails">
+            <li>• Account Number: <span id="accountNumber">-</span></li>
+            <li>• Bank Name: <span id="bankName">-</span></li>
+            <li>• Balance: $<span id="balance">0.00</span></li>
+        </ul>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="section">
+        <h3>Recent Transactions:</h3>
+
+        <div class="transactions-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionTableBody">
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 20px; color: #999;"> No transactions </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="filter-bar">
+            <label>From: <input type="date" id="fromDate"></label>
+            <label>To: <input type="date" id="toDate"></label>
+            <button class="btn-main" id="filterBtn">Filter</button>
+            <button class="btn-secondary" id="resetFilterBtn">Reset</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Scrollable transactions table */
+    .transactions-container {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .transactions-container table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .transactions-container th, .transactions-container td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .transactions-container th {
+        position: sticky;
+        top: 0;
+        background: #f8f8f8;
+        z-index: 2;
+    }
+
+    .transactions-container tr:hover {
+        background: #f1f1f1;
+    }
+    
+    .filter-bar {
+        margin-bottom: 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+</style>
+
+
+
+@section Scripts {
+    <script src="~/js/userDashboard.js"></script>
+}

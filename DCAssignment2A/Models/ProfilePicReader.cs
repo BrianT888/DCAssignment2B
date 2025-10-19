@@ -1,12 +1,19 @@
-﻿namespace DCAssignment2A.Models
+﻿using System.Drawing;
+
+namespace DCAssignment2A.Models
 {
     public class ProfilePicReader
     {
         //setting the default byte[] of userprofile
-        //the output on swagger's json is extremely massive though.
         public static byte[] GetDefaultPFP()
         {
             string filepath = Path.Combine(AppContext.BaseDirectory, "Resources", "default.jpg");
+            return File.ReadAllBytes(filepath);
+        }
+
+        public static byte[] GetAdminPFP()
+        {
+            string filepath = Path.Combine(AppContext.BaseDirectory, "Resources", "adminPFP.png");
             return File.ReadAllBytes(filepath);
         }
 

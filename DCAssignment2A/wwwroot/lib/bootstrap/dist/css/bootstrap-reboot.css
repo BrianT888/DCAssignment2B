@@ -315,7 +315,9 @@ select:disabled {
 
 button,
 [type=button],
-[type=reset],
+[type=
+    
+    ],
 [type=submit] {
   -webkit-appearance: button;
 }

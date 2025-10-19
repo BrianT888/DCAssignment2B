@@ -24,9 +24,10 @@ namespace DCAssignment2A.Controllers
             await _context.Database.ExecuteSqlRawAsync("DELETE FROM sqlite_sequence WHERE name='BankAccounts';");
             await _context.Database.ExecuteSqlRawAsync("DELETE FROM sqlite_sequence WHERE name='Transactions';");
 
-             _context.Transactions.RemoveRange(_context.Transactions);
+            _context.Logs.RemoveRange(_context.Logs);
+            _context.Transactions.RemoveRange(_context.Transactions);
             _context.BankAccounts.RemoveRange(_context.BankAccounts);
-            _context.UserProfiles.RemoveRange(_context.UserProfiles);
+            _context.UserProfiles.RemoveRange(_context.UserProfiles.Where(u => u.UserProfileId > 2));
             await _context.SaveChangesAsync();
 
             return Ok("Database cleared successfully");
@@ -40,9 +41,11 @@ namespace DCAssignment2A.Controllers
             await _context.Database.ExecuteSqlRawAsync("DELETE FROM sqlite_sequence WHERE name='UserProfiles';");
             await _context.Database.ExecuteSqlRawAsync("DELETE FROM sqlite_sequence WHERE name='BankAccounts';");
             await _context.Database.ExecuteSqlRawAsync("DELETE FROM sqlite_sequence WHERE name='Transactions';");
+            
+            _context.Logs.RemoveRange(_context.Logs);
             _context.Transactions.RemoveRange(_context.Transactions);
             _context.BankAccounts.RemoveRange(_context.BankAccounts);
-            _context.UserProfiles.RemoveRange(_context.UserProfiles);
+            _context.UserProfiles.RemoveRange(_context.UserProfiles.Where(u => u.UserProfileId > 2));
             await _context.SaveChangesAsync();
 
             // Seed new data

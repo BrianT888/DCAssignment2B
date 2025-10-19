@@ -17,7 +17,7 @@ namespace DCAssignment2A.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.20");
 
-            modelBuilder.Entity("DCAssignment2A.Models.BankAccount", b =>
+            modelBuilder.Entity("APIClasses.BankAccount", b =>
                 {
                     b.Property<int>("BankAccountId")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,24 @@ namespace DCAssignment2A.Migrations
                     b.ToTable("BankAccounts");
                 });
 
-            modelBuilder.Entity("DCAssignment2A.Models.Transaction", b =>
+            modelBuilder.Entity("APIClasses.Log", b =>
+                {
+                    b.Property<int>("logId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("logMsg")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("logId");
+
+                    b.ToTable("Logs");
+                });
+
+            modelBuilder.Entity("APIClasses.Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
@@ -70,7 +87,7 @@ namespace DCAssignment2A.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("DCAssignment2A.Models.UserProfile", b =>
+            modelBuilder.Entity("APIClasses.UserProfile", b =>
                 {
                     b.Property<int>("UserProfileId")
                         .ValueGeneratedOnAdd()
@@ -81,6 +98,9 @@ namespace DCAssignment2A.Migrations
 
                     b.Property<string>("email")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("name")
                         .HasColumnType("TEXT");
@@ -97,20 +117,42 @@ namespace DCAssignment2A.Migrations
                     b.HasKey("UserProfileId");
 
                     b.ToTable("UserProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserProfileId = 1,
+                            address = "Head Office",
+                            email = "admin1@bankapp.com",
+                            isActive = true,
+                            name = "admin1",
+                            password = "adminpass",
+                            phoneNumber = "0411122233"
+                        },
+                        new
+                        {
+                            UserProfileId = 2,
+                            address = "Head Office",
+                            email = "admin2@bankapp.com",
+                            isActive = true,
+                            name = "admin2",
+                            password = "adminpass",
+                            phoneNumber = "0411122234"
+                        });
                 });
 
-            modelBuilder.Entity("DCAssignment2A.Models.BankAccount", b =>
+            modelBuilder.Entity("APIClasses.BankAccount", b =>
                 {
-                    b.HasOne("DCAssignment2A.Models.UserProfile", null)
+                    b.HasOne("APIClasses.UserProfile", null)
                         .WithMany()
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DCAssignment2A.Models.Transaction", b =>
+            modelBuilder.Entity("APIClasses.Transaction", b =>
                 {
-                    b.HasOne("DCAssignment2A.Models.BankAccount", null)
+                    b.HasOne("APIClasses.BankAccount", null)
                         .WithMany()
                         .HasForeignKey("BankAccountId")
                         .OnDelete(DeleteBehavior.Cascade)

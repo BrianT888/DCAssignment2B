@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DCAssignment2A.Data;
-using DCAssignment2A.Models;
+using APIClasses;
 
 namespace DCAssignment2A.Controllers
 {
@@ -156,7 +156,6 @@ namespace DCAssignment2A.Controllers
             try
             {
                 var bankAccount = await _context.BankAccounts.FirstOrDefaultAsync(b => b.BankAccountNumber == number);
-                if (bankAccount == null) return NotFound($"No bank account found with account number: {number}");
 
                 return bankAccount;
             }
@@ -176,7 +175,6 @@ namespace DCAssignment2A.Controllers
             {
                 //checks bank accounts fk if it matches user id, if it does add to list
                 var bankAccounts = await _context.BankAccounts.Where(b => b.UserProfileId == id).ToListAsync();
-                if (bankAccounts == null || bankAccounts.Count == 0) return NotFound($"No bank accounts found for user with ID: {id}.");
 
                 return Ok(bankAccounts);
             }         

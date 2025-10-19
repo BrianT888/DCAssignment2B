@@ -1,4 +1,4 @@
-﻿using DCAssignment2A.Models;
+﻿using APIClasses;
 using Microsoft.EntityFrameworkCore;
 
 namespace DCAssignment2A.Data
@@ -14,7 +14,7 @@ namespace DCAssignment2A.Data
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,32 @@ namespace DCAssignment2A.Data
                 .WithMany()
                 .HasForeignKey(t => t.BankAccountId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Hardcoded admin profiles
+            modelBuilder.Entity<UserProfile>().HasData(
+                new UserProfile
+                {
+                    UserProfileId = 1,
+                    name = "admin1",
+                    email = "admin1@bankapp.com",
+                    address = "Head Office",
+                    phoneNumber = "0411122233",
+                    password = "adminpass",
+                    profilePicture = null,
+                    isActive = true
+                },
+                new UserProfile
+                {
+                    UserProfileId = 2,
+                    name = "admin2",
+                    email = "admin2@bankapp.com",
+                    address = "Head Office",
+                    phoneNumber = "0411122234",
+                    password = "adminpass",
+                    profilePicture = null,
+                    isActive = true
+                }
+            );
         }
     }
 }

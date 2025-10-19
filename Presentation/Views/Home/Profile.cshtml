@@ -1,0 +1,126 @@
+﻿@{
+    ViewData["Title"] = "User Profile";
+}
+
+<div class="container">
+    <h2>User Profile</h2>
+
+    <div class="profile-card">
+        <img id="profilePic" src="" alt="Profile Picture" class="profile-pic">
+        <ul>
+            <li><strong>Name:</strong> <span id="profileName"></span></li>
+            <li><strong>Email:</strong> <span id="profileEmail"></span></li>
+            <li><strong>Phone:</strong> <span id="profilePhone"></span></li>
+            <li><strong>Address:</strong> <span id="profileAddress"></span></li>
+        </ul>
+        <button class="btn-main" id="backBtn">Back to Dashboard</button>
+    </div>
+
+    <div class="update-section">
+        <h3>Update Info</h3>
+
+        <div>
+            <label for="newEmail">New Email:</label>
+            <input type="text" id="newEmail" />
+            <button class="btn-main" id="updateEmailBtn">Update Email</button>
+            <small id="emailError" style="color: red; display: block; margin-top: 4px;"></small>
+        </div>
+
+        <div>
+            <label for="newPhone">New Phone:</label>
+            <input type="text" id="newPhone" />
+            <button class="btn-main" id="updatePhoneBtn">Update Phone</button>
+            <small id="phoneError" style="color: red; display: block; margin-top: 4px;"></small>
+        </div>
+         
+        <div>
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            <button class="btn-main" id="updatePasswordBtn">Update Password</button>
+            <small id="passwordError" style="color: red; display: block; margin-top: 4px;"></small>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-card {
+        max-width: 400px;
+        margin: 30px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .profile-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        object-fit: cover;
+    }
+
+    .profile-card ul {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+    }
+
+    .profile-card li {
+        margin-bottom: 10px;
+    }
+
+    #backBtn {
+        margin-top: 15px;
+    }
+
+    .update-section {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        text-align: left;
+    }
+
+    .update-section label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .update-section input {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+
+    .update-section button {
+        margin-bottom: 10px;
+    }
+
+    .btn-main {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    .btn-main:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background: #ccc;
+        color: black;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+    }
+</style>
+
+@section Scripts {
+    <script src="~/js/profile.js"></script>
+}
