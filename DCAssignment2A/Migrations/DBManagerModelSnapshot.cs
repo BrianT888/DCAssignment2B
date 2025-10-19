@@ -82,6 +82,9 @@ namespace DCAssignment2A.Migrations
                     b.Property<string>("email")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("name")
                         .HasColumnType("TEXT");
 
@@ -104,6 +107,7 @@ namespace DCAssignment2A.Migrations
                             UserProfileId = 1,
                             address = "Head Office",
                             email = "admin1@bankapp.com",
+                            isActive = false,
                             name = "admin1",
                             password = "adminpass",
                             phoneNumber = "0411122233"
@@ -113,6 +117,7 @@ namespace DCAssignment2A.Migrations
                             UserProfileId = 2,
                             address = "Head Office",
                             email = "admin2@bankapp.com",
+                            isActive = false,
                             name = "admin2",
                             password = "adminpass",
                             phoneNumber = "0411122234"

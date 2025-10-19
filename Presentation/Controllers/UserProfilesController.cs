@@ -24,7 +24,7 @@ namespace Presentation.Controllers
                     StatusCode = 400,
                     Message = "Login data is null"
                 };
-                BadRequest(error);
+                return BadRequest(error);
             }
             
             Console.WriteLine("Starting API Request to backend");
@@ -35,14 +35,14 @@ namespace Presentation.Controllers
             
             Console.WriteLine("Received response from backend");
 
-            if (response.IsSuccessStatusCode)//or is it isSuccess?
+            if (response.IsSuccessStatusCode)
             {
                 UserProfile u = JsonConvert.DeserializeObject<UserProfile>(response.Content);
                 return Ok(u);
             } else
             {
                 Error error = JsonConvert.DeserializeObject<Error>(response.Content);
-                return BadRequest(error);//idk what to do sending back an error
+                return BadRequest(error);
             }    
         }
 
@@ -83,6 +83,85 @@ namespace Presentation.Controllers
             if (response.IsSuccessful) return Ok(response.Content);
 
             return StatusCode((int)response.StatusCode, response.Content);
+        }
+
+        // Update Name
+        [HttpPut]
+        [Route("UpdateName/{id}/{newName}")]
+        public async Task<IActionResult> UpdateName(int id, string newName)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdateName/{id}/{newName}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
+        }
+
+        // Update Address
+        [HttpPut]
+        [Route("UpdateAddress/{id}/{newAddress}")]
+        public async Task<IActionResult> UpdateAddress(int id, string newAddress)
+        {
+            var request = new RestRequest($"api/UserProfiles/UpdateAddress/{id}/{newAddress}", Method.Put);
+            var response = await client.ExecuteAsync(request);
+
+            if (response.IsSuccessful)
+                return Ok(response.Content);
+
+            return StatusCode((int)response.StatusCode, response.Content);
+        }
+
+        // Get all users
+        [HttpGet]
+        [Route("GetAll")]
+        public async Task<ActionResult<IEnumerable<UserProfile>>> GetAllUsers()
+        {
+            try
+            {
+                var request = new RestRequest("api/UserProfiles", Method.Get);
+                RestResponse response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessful)
+                {
+                    var users = JsonConvert.DeserializeObject<List<UserProfile>>(response.Content);
+                    return Ok(users);
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, response.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error retrieving users from business tier: {ex.Message}");
+            }
+        }
+
+
+        [HttpPut]
+        [Route("ToggleStatus/{id}/{status}")]
+        public async Task<IActionResult> ToggleUserStatus(int id, bool status)
+        {
+            try
+            {
+                var request = new RestRequest($"api/UserProfiles/SetActive/{id}/{status}", Method.Put);
+                RestResponse response = await client.ExecuteAsync(request);
+
+                if (response.IsSuccessful)
+                {
+                    return Ok(response.Content);
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, response.Content);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error toggling user status: {ex.Message}");
+            }
         }
     }
 }

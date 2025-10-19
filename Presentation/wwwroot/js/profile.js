@@ -3,8 +3,8 @@
     localStorage.clear(); // Clear the currentUser from localStorage after retrieving it
 
     if (!profileJSON) {
-        // No profile info, go back to dashboard
-        window.location.href = '/Home/UserDashboard';
+        // No profile info, go back to login
+        window.location.href = '/Home/Login';
         return;
     }
 
@@ -19,11 +19,17 @@
     document.getElementById('profileAddress').textContent = user.address;
     document.getElementById('profilePic').src = `data:image/png;base64,${base64String}`;
 
+    console.log(user.userProfileId);
     // Back button
     document.getElementById('backBtn').addEventListener('click', () => {
-        console.log('Back Button Pressed');
         localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = '/Home/UserDashboard';
+
+        if (user.userProfileId < 3) {   // User is an admin if id < 3
+            window.location.href = '/Home/AdminDashboard';
+        }
+        else {
+            window.location.href = '/Home/UserDashboard';
+        }
     });
 
 

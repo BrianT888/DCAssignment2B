@@ -140,4 +140,10 @@
         window.location.href = '/Home/Transfer';
     });
 
+    // logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        //storage is already cleared at top so shouldn't need another line
+        //localStorage.clear();
+        window.location.href = '/Home/Index';
+    })
 });

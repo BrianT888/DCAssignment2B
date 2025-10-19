@@ -113,26 +113,28 @@ namespace DCAssignment2A.Controllers
         public async Task<ActionResult<UserProfile>> PostUserProfile(UserProfile userProfile)
         {
             // Input validation
-            if (userProfile == null) return BadRequest("UserProfile cannot be null.");
-            if (userProfile.UserProfileId < 0) return BadRequest("ID must be a positive integer.");
-            if (string.IsNullOrWhiteSpace(userProfile.name)) return BadRequest("Name is required.");
-            if (string.IsNullOrWhiteSpace(userProfile.email)) return BadRequest("Email is required.");
-            if (string.IsNullOrWhiteSpace(userProfile.address)) return BadRequest("Address is required.");
-            if (string.IsNullOrWhiteSpace(userProfile.phoneNumber)) return BadRequest("Phone number is required.");
-            if (string.IsNullOrWhiteSpace(userProfile.password)) return BadRequest("Password is required.");
-            if (!Regex.IsMatch(userProfile.email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) return BadRequest("Invalid email format.");         
-            if (!Regex.IsMatch(userProfile.phoneNumber, @"^04\d{8}$")) return BadRequest("Phone number must be in format 04XXXXXXXX.");
+            if (userProfile == null) return BadRequest(new Error { StatusCode = 400, Message = "UserProfile cannot be null." });
+            if (userProfile.UserProfileId < 0) return BadRequest(new Error { StatusCode = 400, Message = "ID must be a positive integer." });
+            if (string.IsNullOrWhiteSpace(userProfile.name)) return BadRequest(new Error { StatusCode = 400, Message = "Name is required." });
+            if (string.IsNullOrWhiteSpace(userProfile.email)) return BadRequest(new Error { StatusCode = 400, Message = "Email is required." });
+            if (string.IsNullOrWhiteSpace(userProfile.address)) return BadRequest(new Error { StatusCode = 400, Message = "Address is required." });
+            if (string.IsNullOrWhiteSpace(userProfile.phoneNumber)) return BadRequest(new Error { StatusCode = 400, Message = "Phone number is required." });
+            if (string.IsNullOrWhiteSpace(userProfile.password)) return BadRequest(new Error { StatusCode = 400, Message = "Password is required." });
+            if (!Regex.IsMatch(userProfile.email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) return BadRequest(new Error { StatusCode = 400, Message = "Invalid email format." });         
+            if (!Regex.IsMatch(userProfile.phoneNumber, @"^04\d{8}$")) return BadRequest(new Error { StatusCode = 400, Message = "Phone number must be in format 04XXXXXXXX." });
 
             // Check duplicates
-            if (_context.UserProfiles.Any(u => u.UserProfileId == userProfile.UserProfileId)) return Conflict("User profile ID already exists.");
-            if (_context.UserProfiles.Any(u => u.email == userProfile.email)) return Conflict("Email already exists.");
-            if (_context.UserProfiles.Any(u => u.phoneNumber == userProfile.phoneNumber)) return Conflict("Phone number already exists.");
-            if (_context.UserProfiles.Any(u => u.name.ToLower() == userProfile.name.ToLower())) return Conflict("Username already exists.");
+            if (_context.UserProfiles.Any(u => u.UserProfileId == userProfile.UserProfileId)) return Conflict(new Error { StatusCode = 400, Message = "User profile ID already exists." });
+            if (_context.UserProfiles.Any(u => u.email == userProfile.email)) return Conflict(new Error { StatusCode = 400, Message = "Email already exists." });
+            if (_context.UserProfiles.Any(u => u.phoneNumber == userProfile.phoneNumber)) return Conflict(new Error { StatusCode = 400, Message = "Phone number already exists." });
+            if (_context.UserProfiles.Any(u => u.name.ToLower() == userProfile.name.ToLower())) return Conflict(new Error { StatusCode = 400, Message = "Username already exists." });
 
             try
             {
                 //set the user profile to have the default profile picture
                 userProfile.profilePicture = ProfilePicReader.GetDefaultPFP();
+                userProfile.isActive = true; // user starts as active
+
                 _context.UserProfiles.Add(userProfile);
                 await _context.SaveChangesAsync();
 
@@ -140,11 +142,11 @@ namespace DCAssignment2A.Controllers
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                return StatusCode(500, $"Database error: {ex.Message}");
+                return StatusCode(500, new Error { StatusCode = 500, Message = $"Database error: {ex.Message}" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error creating user profile: {ex.Message}");
+                return StatusCode(500, new Error { StatusCode = 500, Message = $"Error creating user profile: {ex.Message}" });
             }
         }
 
@@ -398,42 +400,13 @@ namespace DCAssignment2A.Controllers
         }
 
 
-        // Attempt to login
-        //[HttpGet]
-        //[Route("Login")]
-        //public async Task<IActionResult> Login([FromBody] LoginData loginData)
-        //{
-        //    if (string.IsNullOrWhiteSpace(loginData.Username) || string.IsNullOrWhiteSpace(loginData.Password)) return BadRequest("Username and password are required.");
-
-        //    var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.name == loginData.Username && u.password == loginData.Password);
-
-        //    if (user == null)
-        //    {
-        //        return Unauthorized("Invalid username or password.");
-        //    }
-
-        //    // Return user info (not password or address)
-        //    return Ok(new
-        //    {
-        //        user.UserProfileId,
-        //        user.name,
-        //        user.profilePicture,
-        //        user.phoneNumber,
-        //        user.email,
-        //    });
-        //}
-
-        //brians attempt
-        //feel free to change it to above but gimme reason why so i can understand lol
         [HttpGet]
         [Route("Login")]
         public async Task<ActionResult<UserProfile>> Login([FromBody] LoginData loginData)
         {
-            Console.WriteLine("Login attempt received.");
             if (string.IsNullOrWhiteSpace(loginData.Username) || string.IsNullOrWhiteSpace(loginData.Password)) return BadRequest("Username and password are required.");
-            Console.WriteLine("login data is: " + loginData.Username + " : " + loginData.Password);
+
             var user = await _context.UserProfiles.FirstOrDefaultAsync(u => u.name == loginData.Username && u.password == loginData.Password);
-            Console.WriteLine("Found user in database.");
             if (user == null)
             {
                 Error error = new Error
@@ -445,6 +418,19 @@ namespace DCAssignment2A.Controllers
             }
 
             return Ok(user);
+        }
+
+
+        [HttpPut("SetActive/{id}/{status}")]
+        public async Task<IActionResult> SetActiveStatus(int id, bool status)
+        {
+            var user = await _context.UserProfiles.FindAsync(id);
+            if (user == null) return NotFound(new Error { StatusCode = 404, Message = "User not found." });
+
+            user.isActive = status;
+            await _context.SaveChangesAsync();
+
+            return Ok($"User with ID {id} has been {(status ? "activated" : "deactivated")}.");
         }
     }
 }

@@ -43,7 +43,8 @@ namespace DCAssignment2A.Data
                     address = "Head Office",
                     phoneNumber = "0411122233",
                     password = "adminpass",
-                    profilePicture = null
+                    profilePicture = null,
+                    isActive = true
                 },
                 new UserProfile
                 {
@@ -53,7 +54,8 @@ namespace DCAssignment2A.Data
                     address = "Head Office",
                     phoneNumber = "0411122234",
                     password = "adminpass",
-                    profilePicture = null
+                    profilePicture = null,
+                    isActive = true
                 }
             );
         }

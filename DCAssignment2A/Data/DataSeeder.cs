@@ -14,6 +14,14 @@ namespace DCAssignment2A.Data
             // Only seed if there are no profiles other than the 2 admin accounts
             if (context.UserProfiles.Count() > 2) return;
 
+            // Give admin profiles the admin profile picture
+            foreach (var admin in context.UserProfiles.Where(u => u.profilePicture == null))
+            {
+                admin.profilePicture = ProfilePicReader.GetAdminPFP();
+                admin.isActive = true;
+            }
+            context.SaveChanges();
+
             var random = new Random();
 
             // Generate random UserProfiles
@@ -57,7 +65,8 @@ namespace DCAssignment2A.Data
                     address = address,
                     phoneNumber = phone,
                     password = password,
-                    profilePicture = ProfilePicReader.GetDefaultPFP()
+                    profilePicture = ProfilePicReader.GetDefaultPFP(),
+                    isActive = true
                 };
 
                 userProfiles.Add(userProfile);
