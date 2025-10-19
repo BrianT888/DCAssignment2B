@@ -118,21 +118,19 @@
     })
 
     // Redirect
-    //document.getElementById('profileLink').addEventListener('click', () => {
-    //    localStorage.setItem('currentUser', JSON.stringify(adminProfile));
-    //    window.location.href = '/Home/TransactionManagement';
-    //})
-
-    // Redirect
-    //document.getElementById('userManagementLink').addEventListener('click', () => {
-    //    localStorage.setItem('currentUser', JSON.stringify(adminProfile));
-    //    window.location.href = '/Home/TransactionManagement';
-    //})
+    document.getElementById('userManagementLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(adminProfile));
+        window.location.href = '/Home/UserManagement';
+    })
 
     // logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
-        //storage is already cleared at top so shouldn't need another line
-        //localStorage.clear();
         window.location.href = '/Home/Index';
+    })
+
+    // Redirect to profile page when profile link clicked
+    document.getElementById('profileLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(adminProfile));
+        window.location.href = '/Home/Profile';
     })
 });

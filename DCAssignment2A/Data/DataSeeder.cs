@@ -85,7 +85,7 @@ namespace DCAssignment2A.Data
             {
                 int numBankAccounts = random.Next(1, 5);
 
-                for (int i = 1; i < numBankAccounts; i++)
+                for (int i = 0; i < numBankAccounts; i++)
                 {
                     // Ensure unique bank account number using a hash set
                     int accountNumber;
@@ -118,7 +118,7 @@ namespace DCAssignment2A.Data
             foreach (var bankAccount in bankAccounts)
             {
                 int numTransactions = random.Next(10, 101); // 10-100 transactions per bank account
-                for (int i = 1; i < numTransactions; i++)
+                for (int i = 0; i < numTransactions; i++)
                 {
                     var isWithdrawal = random.Next(2) == 0;    // 50/50 change of withdrawal or deposit
                     var amount = Math.Round((decimal)(random.NextDouble() * 1000), 2);

@@ -13,7 +13,6 @@
 
     // Set name
     document.getElementById('userName').textContent = currentUser.name;
-    document.getElementById('accountName').textContent = currentUser.name;
 
     try {
         // Get all bank accounts for the user

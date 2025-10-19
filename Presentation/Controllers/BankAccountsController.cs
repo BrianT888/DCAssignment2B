@@ -14,7 +14,7 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("UserID/{id}")]
-        public async Task<ActionResult<BankAccount>> GetAllBankAccountsByID(int id)
+        public async Task<ActionResult<List<BankAccount>>> GetAllBankAccountsByID(int id)
         {
             if (id < 0) return BadRequest("Invalid input. ID value must be a positive integer.");
 
@@ -26,8 +26,6 @@ namespace Presentation.Controllers
                 if (response.IsSuccessful)
                 {
                     var bankAccounts = JsonConvert.DeserializeObject<List<BankAccount>>(response.Content);
-
-                    if (bankAccounts == null || bankAccounts.Count == 0) return NotFound($"No bank accounts found for user with ID: {id}.");
 
                     return Ok(bankAccounts);
                 }

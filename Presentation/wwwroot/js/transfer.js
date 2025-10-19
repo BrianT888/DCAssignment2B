@@ -11,6 +11,12 @@
     const dropdown = document.getElementById('bankAccountDropdown');
     const messageBox = document.getElementById('transferMessage');
 
+    // Back to Dashboard
+    document.getElementById('backBtn').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        window.location.href = '/Home/UserDashboard';
+    });
+
     // Fetch bank accounts helper function
     async function fetchAccounts() {
         const response = await fetch(`http://localhost:5082/api/BankAccounts/UserID/${currentUser.userProfileId}`);
@@ -20,6 +26,15 @@
 
     // Get all bank accounts for the user
     let accounts = await fetchAccounts();
+
+    // Check if user has no bank accounts
+    if (!accounts || accounts.length == 0) {
+        messageBox.style.color = 'red';
+        messageBox.textContent = "You have no bank accounts. Cannot perform transfers.";
+        dropdown.disabled = true;
+        document.getElementById('transferBtn').disabled = true;
+        return; // stop further initialization
+    }
 
     // Show bank accounts as a selectable drop down list
     accounts.forEach(acc => {
@@ -109,11 +124,5 @@
             messageBox.textContent = "An error occurred during transfer.";
             console.error(err);
         }
-    });
-
-    // Back to Dashboard
-    document.getElementById('backBtn').addEventListener('click', () => {
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        window.location.href = '/Home/UserDashboard';
     });
 });

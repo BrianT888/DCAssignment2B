@@ -4,7 +4,7 @@
 
     if (!profileJSON) {
         // No profile info, go back to login
-        window.location.href = '/Home/Login';
+        window.location.href = '/Home/Index';
         return;
     }
 
@@ -46,8 +46,10 @@
         if (response.ok) {
             user.email = newEmail;
             document.getElementById('profileEmail').textContent = newEmail;
+            errorBox.style.color = 'green';
             errorBox.textContent = 'Email updated successfully!';
         } else {
+            errorBox.style.color = 'red';
             const errText = await response.text();
             errorBox.textContent = errText;
         }
@@ -66,9 +68,11 @@
         if (response.ok) {
             user.phoneNumber = newPhone;
             document.getElementById('profilePhone').textContent = newPhone;
+            errorBox.style.color = 'green';
             errorBox.textContent = 'Phone number updated successfully!';
 
         } else {
+            errorBox.style.color = 'red';
             const errText = await response.text();
             errorBox.textContent = errText;
         }
@@ -85,8 +89,10 @@
         const response = await fetch(`http://localhost:5082/api/UserProfiles/UpdatePassword/${user.userProfileId}/${encodeURIComponent(newPassword)}`, { method: 'PUT' });
 
         if (response.ok) {
+            errorBox.style.color = 'green';
             errorBox.textContent = 'Phone number updated successfully!';
         } else {
+            errorBox.style.color = 'red';
             const errText = await response.text();
             errorBox.textContent = errText;
         }

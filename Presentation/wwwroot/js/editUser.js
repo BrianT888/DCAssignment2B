@@ -42,15 +42,9 @@
 
             if (response.ok) {
                 user[userProp] = newValue;
-                console.log(`profile${userProp.charAt(0).toUpperCase() + userProp.slice(1)}`); // <-- debug
-
                 document.getElementById(`profile${userProp.charAt(0).toUpperCase() + userProp.slice(1)}`).textContent = newValue;
                 errorBox.style.color = 'green';
-                console.log('Before text content'); // <-- debug
-
                 errorBox.textContent = successMsg;
-                console.log('Successful'); // <-- debug
-
             } else {
                 const errText = await response.text();
                 errorBox.style.color = 'red';

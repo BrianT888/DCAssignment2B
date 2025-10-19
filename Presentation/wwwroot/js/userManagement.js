@@ -183,4 +183,26 @@
         createMsg.textContent = message;
         createMsg.style.color = color;
     }
+
+    // Redirect
+    document.getElementById('homeLink').addEventListener('click', () => {
+        window.location.href = '/Home/adminDashboard';
+    })
+
+    // Redirect
+    document.getElementById('userManagementLink').addEventListener('click', () => {
+
+        window.location.href = '/Home/UserManagement';
+    })
+
+    // logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = '/Home/Index';
+    })
+
+    // Redirect to profile page when profile link clicked
+    document.getElementById('profileLink').addEventListener('click', () => {
+        window.location.href = '/Home/Profile';
+    })
 });
