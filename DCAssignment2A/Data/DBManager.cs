@@ -14,7 +14,7 @@ namespace DCAssignment2A.Data
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

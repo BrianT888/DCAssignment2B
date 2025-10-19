@@ -9,6 +9,22 @@ namespace Presentation.Controllers
     public class AdminController : Controller
     {
         private RestClient client = new RestClient("http://localhost:5299"); //Business tier   
+        [HttpPost]
+        [Route("CreateLog")]
+        public async Task<IActionResult> CreateLog([FromBody] LogData logData)
+        {
+            RestRequest request = new RestRequest($"api/Logs/CreateLog/{logData.userId}/{logData.msg}", Method.Post);
+            RestResponse response = await client.ExecuteAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Error error = JsonConvert.DeserializeObject<Error>(response.Content);
+                return BadRequest(error);
+            }
+
+            return Ok("created log");
+
+        }
 
         [HttpGet]
         [Route("GetAllTransactions")]

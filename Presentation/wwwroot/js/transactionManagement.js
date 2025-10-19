@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", async () => {
     console.log("Entered Transaction Management")
     const currentUserJSON = localStorage.getItem('currentUser');
     localStorage.clear(); // Clear currentUser from localStorage after retrieving it
@@ -8,6 +8,17 @@
         return;
     }
     const adminProfile = JSON.parse(currentUserJSON);
+
+    const response = await fetch('http://localhost:5082/api/admin/CreateLog', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            userId: adminProfile.userId,
+            msg: "Entered Transaction Management"
+        })
+    });
+
+    if (!response.ok) throw new Error('Failed to Catch Log');
 
     var transactions;
 
@@ -123,8 +134,23 @@
         window.location.href = '/Home/UserManagement';
     })
 
+    document.getElementById('transactionManagementLink').addEventListener('click', () => {
+        localStorage.setItem('currentUser', JSON.stringify(adminProfile));
+        window.location.href = '/Home/TransactionManagement';
+    })
+
     // logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        const response = await fetch('http://localhost:5082/api/admin/CreateLog', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: adminProfile.userId,
+                msg: "User Logged out"
+            })
+        });
+
+        if (!response.ok) throw new Error('Failed to Catch Log');
         window.location.href = '/Home/Index';
     })
 
