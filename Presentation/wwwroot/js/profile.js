@@ -90,7 +90,7 @@
 
         if (response.ok) {
             errorBox.style.color = 'green';
-            errorBox.textContent = 'Phone number updated successfully!';
+            errorBox.textContent = 'Password updated successfully!';
         } else {
             errorBox.style.color = 'red';
             const errText = await response.text();
