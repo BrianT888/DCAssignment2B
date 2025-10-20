@@ -27,6 +27,8 @@ body {
     padding: 30px;
     border: 1px solid #ddd;
     border-radius: 8px;
+    z-index: 10;
+    background: white;
 }
 
 .form-group {
