@@ -60,6 +60,36 @@
 </div>
 
 <style>
+
+    .container {
+        background-color: white;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+        display: flex;
+        gap: 15px;
+        padding: 10px 20px;
+        background-color: #7bc7ed;
+    }
+
+    .nav-bar a { /* the links*/
+        text-decoration: none;
+        background-color: #7bc7ed;
+        font-weight: bolder;
+        display: inline-block;
+        padding: 5px 10px 5px 10px;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.1s;
+    }
+
+    .nav-bar a:hover {
+        background: #007bff;
+    }
     /* Scrollable transactions table */
     .transactions-container {
         max-height: 300px;
